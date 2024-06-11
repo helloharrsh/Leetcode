@@ -1,31 +1,35 @@
 class Solution {
     public int[] relativeSortArray(int[] arr1, int[] arr2) {
-        Map<Integer, Integer> countMap = new HashMap<>();
-        List<Integer> remaining = new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
         
-        for(int val : arr2){
-        countMap.put(val,0);
+        
+        int max = 0;
+        for(int i =0; i<arr1.length; i++){
+            max = Math.max(max,arr1[i]);
         }
         
-        for(int value : arr1){
-            if(countMap.containsKey(value)){
-                countMap.put(value,countMap.get(value) +1);
-            }
-            else{
-                remaining.add(value);
-            }
+        int[] count = new int[max+1]; 
+        
+        for(int i=0; i<arr1.length; i++){
+            count[arr1[i]]++;
         }
         
-        Collections.sort(remaining);
-        
-        for(int value: arr2){
-            for(int j = 0; j<countMap.get(value); j++){
-                result.add(value);
+        int[] ans = new int[arr1.length];
+        int idx = 0; 
+        for(int i =0; i<arr2.length; i++){
+            while(count[arr2[i]] >0){
+                ans[idx] = arr2[i];
+                idx++; 
+                count[arr2[i]]--;
             }
         }
         
-        result.addAll(remaining);
-        return result.stream().mapToInt(Integer::intValue).toArray();
+        for(int i =0; i<count.length; i++){
+            while(count[i]>0){
+                ans[idx] = i; 
+                idx++; 
+                count[i] --; 
+            }
+        }
+    return ans;
     }
 }
