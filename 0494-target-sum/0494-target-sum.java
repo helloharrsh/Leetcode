@@ -1,4 +1,6 @@
 class Solution {
+    
+    /*
     public int solve_memo(int ind, int target, int[] arr, int[][] dp){
         if(ind == 0){
             if(target == 0 && arr[0] == 0)
@@ -22,7 +24,39 @@ class Solution {
         return dp[ind][target] = (take + nottake);
     }
     
+    */
+    
+    public int solve_tabu(int [] nums, int target){
+        int n = nums.length;
+        int [][] dp = new int[n][target+1];
+        
+        if(nums[0] == 0)
+            dp[0][0] =2;
+        else
+            dp[0][0] =1;
+        
+        if(nums[0] != 0 && nums[0] <= target)
+            dp[0][nums[0]] = 1;
+        
+        for(int ind = 1; ind<n; ind++){
+            for(int tar = 0; tar<= target; tar++){
+                int notTake = dp[ind-1][tar];
+                
+                int take =0;
+                
+                if(nums[ind] <= tar)
+                    take = dp[ind-1][tar - nums[ind]];
+                dp[ind][tar] = (notTake + take);
+            }
+        }
+        
+        return dp[n-1][target];
+    }
+    
+    
     public int findTargetSumWays(int[] nums, int target) {
+        
+        
         int tot = 0; 
         for(int i =0; i< nums.length; i++){
             tot += nums[i];
@@ -36,6 +70,8 @@ class Solution {
         
         int n = nums.length;
         int s2 = (tot - target)/2;
+        
+        /*
         int dp[][] = new int[n][s2+1];
         
         for(int [] row: dp){
@@ -43,5 +79,9 @@ class Solution {
         }
         
         return solve_memo(n-1,s2,nums,dp);
+        
+        */
+        
+        return solve_tabu(nums,s2);
     }
 }
