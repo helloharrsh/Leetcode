@@ -15,7 +15,7 @@ class Solution {
         dp[ind][prev+1] = Math.max(notTake, take);
         return dp[ind][prev+1];
     }
-    */
+    
     public int solve_tabu(int[] arr, int n){
         int dp[][] = new int[n+1][n+1];
         for(int ind = n-1; ind >= 0; ind--){
@@ -29,6 +29,26 @@ class Solution {
         }
         return dp[0][0];
     }
+    
+    */
+    
+    public int solve_tabu_algo(int [] arr, int n){
+        int dp[] = new int[n];
+        Arrays.fill(dp,1);
+        
+        for(int i = 0; i<= n-1; i++){
+            for(int prev = 0; prev <= i-1; prev ++){
+                if(arr[prev] < arr[i])
+                    dp[i] = Math.max(dp[i], 1 + dp[prev]);
+            }
+        }
+        
+        int ans = -1;
+        for(int i =0; i <= n-1; i++)
+            ans = Math.max(ans, dp[i]);
+        
+        return ans;
+    }
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         /*
@@ -37,7 +57,8 @@ class Solution {
             Arrays.fill(row,-1);
         
         return solve_memo(nums,n,0,-1,dp);
-        */
         return solve_tabu(nums,n);
+         */
+        return solve_tabu_algo(nums,n);
     }
 }
